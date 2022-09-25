@@ -1,0 +1,21 @@
+{
+  "name": "orders",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/hapi": "^20.2.2",
+    "@hapi/joi": "^17.1.1",
+    "joi": "^17.6.0",
+    "kafkajs": "^2.2.0",
+    "pg": "^8.7.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
