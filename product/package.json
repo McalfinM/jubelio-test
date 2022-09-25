@@ -1,0 +1,32 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "mocha ./unit-test/test.js --timeout 10000 --exit"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/code": "^9.0.1",
+    "@hapi/hapi": "^20.2.2",
+    "@hapi/joi": "^17.1.1",
+    "@hapi/lab": "^25.0.1",
+    "chai": "^4.3.6",
+    "chai-as-promised": "^7.1.1",
+    "dotenv": "^16.0.2",
+    "hapi-auth-jwt2": "^10.2.0",
+    "joi": "^17.6.0",
+    "kafkajs": "^2.2.0",
+    "mocha": "^10.0.0",
+    "pg": "^8.7.1",
+    "sinon": "^14.0.0",
+    "sinon-chai": "^3.7.0",
+    "supertest": "^6.2.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
