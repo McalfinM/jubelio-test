@@ -13,6 +13,7 @@ exports.update = data => {
     const schema = Joi.object({
         quantity: Joi.number().required().empty()
     });
+    schema.unknown(false)
 
     return schema.validate(data);
 };

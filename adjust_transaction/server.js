@@ -2,8 +2,8 @@
 const Hapi = require('@hapi/hapi');
 const {client} = require('./src/helpers/database')
 const transaction = require('./src/api/routes/transaction')
-// const {consumer} = require('./src/helpers/consumer')
-// require('./src/helpers/consumer')
+const {consumer} = require('./src/helpers/consumer')
+require('./src/helpers/consumer')
 const init = async () => {
 
     const server = Hapi.server({

@@ -17,7 +17,6 @@ exports.update = async (request,h) => {
     if (error) {
         return h.response({ message: error.details[0].message }).code(422)
     }
-    console.log(request)
     const data = await service.update(request.params.sku,value)
     return data
 }

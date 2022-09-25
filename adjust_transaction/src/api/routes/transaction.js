@@ -27,6 +27,7 @@ const transaction = [
     path: '/transaction/{sku}',
     handler: async (request,h) => {
       try{
+        console.log(request,'req')
         const data = await controller.update(request,h)
         return h.response({"message": "Success"}).code(200)
       }catch(err){

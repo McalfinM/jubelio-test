@@ -9,9 +9,9 @@ exports.getDetail = async (id) => {
 }
 
 exports.create = async (payload) => {
-    return  await client.query(`INSERT INTO adjusment_transactions(sku,quantity,amount) VALUES('${payload.sku}','${payload.quantity}','${payload.amount}')`)
+    return  await client.query(`INSERT INTO adjusment_transactions(sku,quantity,amount) VALUES('${payload.sku}','${payload.quantity}',${payload.amount})`)
 }
 
 exports.update = async (payload) => {
-    return await client.query(`UPDATE adjustment_transactions SET sku='${payload.sku}', quantity='${payload.quantity},amount='${payload.amount}''`)
+    return await client.query(`UPDATE adjusment_transactions SET sku='${payload.sku}', quantity=${payload.quantity},amount=${payload.amount}`)
 }

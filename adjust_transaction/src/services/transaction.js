@@ -40,7 +40,7 @@ exports.create = async (request) => {
 exports.update = async (sku, request) => {
       //search product by sku
       const product = await serivceProduct.getDetail(sku)
-      console.log(product,'pro')
+   
       if(product.length < 1) throw new Error('product not found')
   
       //logic create adjusment + logic harga * quantity yang dibuat
@@ -51,7 +51,7 @@ exports.update = async (sku, request) => {
           amount: total_price
   
       }
-     
+     console.log(json,'json')
     const adjust = await repository.update(json)
     const productAdjust = await serivceProduct.adjustmentProduct(json)
     return adjust
