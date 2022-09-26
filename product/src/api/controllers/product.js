@@ -2,7 +2,7 @@ const service = require('../../services/product')
 const {create} = require('../validate/product')
 exports.getAll = async (request, h) => {
 
-    const data = await service.getAll()
+    const data = await service.getAll(request.query.npp, request.query.page)
 
     return data
 }

@@ -1,15 +1,24 @@
+const { consumerCallback } = require('../events/controllers/transaction')
 const {kafka} = require('./kafka')
 
+const callbacks = { ...consumerCallback }
 
-const consumer = kafka.consumer({ groupId: 'test-group' })
+exports.consumerCallback = {}
 
-  consumer.connect()
-  consumer.subscribe({ topic: 'test-topic', fromBeginning: true })
+exports.consumer = async (topic) => {
+  const consumer = kafka.consumer({ groupId: 'product-group' })
+  await consumer.connect()
+  await consumer.subscribe({ topics: topic, fromBeginning: true })
+  await consumer.run({
+    eachMessage: async ({ topic, partition, message }) => {
+      console.log(topic, 'topic')
+      console.log({
+        value: message.value.toString(),
+      })
 
-  consumer.run({
-  eachMessage: async ({ topic, partition, message }) => {
-    console.log({
-      value: message.value.toString(),
-    })
-  },
-})
+      if(consumerCallback[topic]) {
+        consumerCallback[topic](JSON.parse(message.value.toString()))
+      }
+    },
+  })
+}

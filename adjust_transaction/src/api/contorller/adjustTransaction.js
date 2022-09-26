@@ -20,3 +20,10 @@ exports.update = async (request,h) => {
     const data = await service.update(request.params.sku,value)
     return data
 }
+
+exports.getAll = async (request,h) => {
+    const limit = request.query.limit
+    const page = request.query.page
+    const data = await service.get(limit,page)
+    return data
+}

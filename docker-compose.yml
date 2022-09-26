@@ -1,0 +1,161 @@
+version: '3.8'
+services:
+  # These are the configurations for our Node app
+  # When Docker Compose starts this container it will automatically
+  # use the Dockerfile in the directory to configure it
+  adjust_transaction:
+    build: ./adjust_transaction
+    depends_on:
+      # Our app does not work without our database
+      # so this ensures our database is loaded first
+      - adjust_transaction_postgres
+      - broker
+    environment:
+      - BROKERS=broker:29092
+      - DBHOST=adjust_transaction_postgres
+      - DBPASSWORD=adjust_transaction
+      - DBUSER=adjust_transaction
+      - DBPORT=5432
+    # network_mode: "host"
+    ports:
+      - 8089:8081
+    # networks:
+    #   - jubelio
+    volumes:
+      # Maps our current project directory `.` to
+      # our working directory in the container
+      - ./:/adjust_transaction/
+      # node_modules workaround for volumes
+      # https://stackoverflow.com/a/32785014
+      - /adjust_transaction/node_modules
+  # These are the configurations for our Node app
+  # When Docker Compose starts this container it will automatically
+  # use the Dockerfile in the directory to configure it
+  product:
+    build: ./product
+    depends_on:
+      # Our product does not work without our database
+      # so this ensures our database is loaded first
+      - product_postgres
+      - broker
+    environment:
+      - BROKERS=broker:29092
+      - DBHOST=product_postgres
+      - DBPASSWORD=product
+      - DBUSER=product
+      - DBPORT=5432
+    # network_mode: "host"
+    ports:
+      - 8080:8080
+    # networks:
+    #   - jubelio
+    volumes:
+      # Maps our current project directory `.` to
+      # our working directory in the container
+      - ./:/product/
+      # node_modules workaround for volumes
+      # https://stackoverflow.com/a/32785014
+      - /product/node_modules
+
+  # This is the configuration for our PostgreSQL database container
+  # Note the `postgres` name is important, in out Node app when we refer
+  # to  `host: "postgres"` that value is mapped on the network to the 
+  # address of this container.
+  product_postgres:
+    hostname: product_postgres
+    container_name: product_postgres
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      # You can set the value of environment variables
+      # in your docker-compose.yml file
+      # Our Node app will use these to connect
+      # to the database
+      - POSTGRES_USER=product
+      - POSTGRES_PASSWORD=product
+      - POSTGRES_DB=product
+    ports:
+      # Standard port for PostgreSQL databases
+      - "5432:5432"
+    # networks:
+    #   - jubelio
+    volumes:
+      # When the PostgresSQL container is started it will run any scripts
+      # provided in the `docker-entrypoint-initdb.d` directory, this connects
+      # our seed file to that directory so that it gets run
+      - ./product/database-seed.sql:/docker-entrypoint-initdb.d/database-seed.sql
+
+
+  # This is the configuration for our PostgreSQL database container
+  # Note the `postgres` name is important, in out Node app when we refer
+  # to  `host: "postgres"` that value is mapped on the network to the 
+  # address of this container.
+  adjust_transaction_postgres:
+    hostname: adjust_transaction_postgres
+    container_name: adjust_transaction_postgres
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      # You can set the value of environment variables
+      # in your docker-compose.yml file
+      # Our Node app will use these to connect
+      # to the database
+      - POSTGRES_USER=adjust_transaction
+      - POSTGRES_PASSWORD=adjust_transaction
+      - POSTGRES_DB=adjust_transaction
+    ports:
+      # Standard port for PostgreSQL databases
+      - "5433:5432"
+    # networks:
+    #   - jubelio
+    volumes:
+      # When the PostgresSQL container is started it will run any scripts
+      # provided in the `docker-entrypoint-initdb.d` directory, this connects
+      # our seed file to that directory so that it gets run
+      - ./adjust_transaction/database-seed.sql:/docker-entrypoint-initdb.d/database-seed.sql
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:6.0.1
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    # networks:
+    #   - jubelio
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  broker:
+    image: confluentinc/cp-server:6.0.1
+    hostname: broker
+    container_name: broker
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "9101:9101"
+    # networks:
+    #   - jubelio
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9101
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:29092
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+      CONFLUENT_METRICS_ENABLE: 'true'
+      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+
+# networks:
+#   jubelio:

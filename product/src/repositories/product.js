@@ -1,9 +1,16 @@
 const {client} = require('../helpers/database')
 
 
-exports.getAll = async () => {
+exports.getAll = async (limit, paging) => {
+   // page number
+   const page = paging ?? 1
+   const skip = limit ?? 10
+   // calculate offset
+   const offset = (page - 1) * skip
+   // query for fetching data with page number and offset
+   const prodsQuery = "select * from products ORDER BY id limit "+skip+" OFFSET "+offset
 
-   return await client.query('SELECT * FROM products')
+   return await client.query(prodsQuery)
 }
 
 exports.getDetail = async (id) => {
@@ -16,8 +23,8 @@ exports.create = async (payload) => {
 }
 
 exports.update = async (payload) => {
-   const product = await client.query(`UPDATE products SET name='${payload.name}',sku='${payload.sku}',quantity='${payload.quantity}',price='${payload.price}',description='${payload.description}',image='${payload.image}' WHERE id = ${payload.id};--`)
-   return true
+   const product = await client.query(`UPDATE products SET name='${payload.name}',sku='${payload.sku}',quantity=${payload.quantity},price=${payload.price},description='${payload.description}',image='${payload.image}' WHERE sku = '${payload.sku}'`)
+   return product
 }
 
 exports.getByProdNo = async (sku) => {

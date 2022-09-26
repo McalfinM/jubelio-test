@@ -1,10 +1,11 @@
 const repository = require('../repositories/product')
+const producer = require('../helpers/producer')
 
-exports.getAll = async () => {
+exports.getAll = async (npp,page) => {
 
    let arr = []
-   const data = await repository.getAll()
-   const product = data.rows
+   const data = await repository.getAll(npp,page)
+     const product = data.rows
    for(let i =0; i<product.length; i++){
       arr.push({
          id:product[i].id,
@@ -14,8 +15,14 @@ exports.getAll = async () => {
          image: product[i].image
       })
    }
+   let json = {
+      total: data.rowCount,
+      page: page,
+      data: arr
+   }
+ 
 
-   return arr
+   return json
 }
 
 exports.getDetail = async (id) => {
@@ -43,6 +50,8 @@ exports.create = async (payload) => {
       description: payload.description,
    }
   const create = await repository.create(data)
+  await producer.produce('create_product', data)
+
   return create
 }
 
@@ -64,6 +73,7 @@ exports.update = async (id,payload) => {
       description: payload.description,
    }
   const create = await repository.update(data)
+  await producer.produce('update_product', data)
   return create
 }
 
@@ -72,10 +82,17 @@ exports.delete = async (id) => {
    if(product.rowCount < 1) throw new Error('product not found')
 
    const dataProdut = await repository.delete(id)
+   await producer.produce('delete_product', product.rows[0])
    return dataProdut
 }
 
 exports.deleteSku = async (sku) => {
    const dataProdut = await repository.deleteBySku(sku)
    return dataProdut
+}
+
+exports.updateFromevent = async (data) => {
+   const create = await repository.update(data)
+
+   return create
 }

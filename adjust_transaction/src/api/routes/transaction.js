@@ -4,8 +4,15 @@ const transaction = [
   {
     method: 'Get',
     path: '/transaction',
-    handler: (request,h) => {
-      return 'trasaction conncet'
+    handler: async (request,h) => {
+      try{
+        const data = await controller.getAll(request,h)
+        return h.response(data).code(200)
+      }catch(err){
+        console.log(err)
+        // return err.message
+        return err.message
+      }
     }
   },
   {
@@ -14,7 +21,7 @@ const transaction = [
     handler: async (request,h) => {
       try{
         const data = await controller.create(request,h)
-        return h.response({"message": "Success"}).code(200)
+        return h.response({"message": "Success"}).code(201)
       }catch(err){
         console.log(err)
         // return err.message

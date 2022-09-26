@@ -2,11 +2,8 @@ const chai = require('chai');
 const expect = chai.expect;
 const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised);
-const sinon = require("sinon");
 const sinonChai = require('sinon-chai');
-const Pool = require('pg')
 const {pool} = require('../src/helpers/database')
-const request = require('supertest')
 chai.use(sinonChai);
 const {server} = require('../server')
 
@@ -79,7 +76,7 @@ describe('Testing product API', () => {
         };
         const data = await server.inject(options);
         expect(data.statusCode).eq(200);
-        expect(data.result[0].name).equal(payload.name)
+        expect(data.result.data[0].name).equal(payload.name)
       })
 
       it('Should get detail product', async function () {

@@ -1,13 +1,11 @@
 const {kafka} = require('./kafka')
 
-const producer = kafka.producer()
+exports.produce = async (topic, obj) => {
+    const producer = kafka.producer()
 
-await producer.connect()
-await producer.send({
-  topic: 'test-topic',
-  messages: [
-    { value: 'Hello KafkaJS user!' },
-  ],
-})
+    await producer.connect()
+    await producer.send({topic: topic, messages: [{value: JSON.stringify(obj)}]})
+    await producer.disconnect()
+    return producer
+}
 
-await producer.disconnect()

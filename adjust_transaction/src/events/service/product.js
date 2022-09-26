@@ -1,4 +1,5 @@
 const repository = require('../repositories/product')
+const service = require('../../services/transaction')
 
 exports.getAll = async () => {
 
@@ -36,8 +37,9 @@ exports.update = async (payload) => {
   return create
 }
 
-exports.delete = async (id) => {
-   const dataProdut = await repository.delete(id)
+exports.delete = async (message) => {
+   const dataProdut = await repository.delete(message.sku)
+   service.deleteFromEvent(message.sku)
    return dataProdut
 }
 
@@ -56,5 +58,5 @@ exports.adjustmentProduct = async (payload) => {
 
    const data = await repository.update(entity)
 
-   return data
+   return entity
 }

@@ -1,11 +1,19 @@
 const {client} = require('../helpers/database')
 
-exports.getAll = async () => {
-    return await client.query('SELECT * FROM adjustment_transactions')
-}
+exports.getAll = async (limit, paging) => {
+    // page number
+    const page = paging ?? 1
+    const skip = limit ?? 10
+    // calculate offset
+    const offset = (page - 1) * skip
+    // query for fetching data with page number and offset
+    const prodsQuery = "select * from adjusment_transactions limit "+skip+" OFFSET "+offset
+ 
+    return await client.query(prodsQuery)
+ }
 
 exports.getDetail = async (id) => {
-    return await client.query(`SELECT * FROM adjustment_transactions WHERE id = ${id};--`)
+    return await client.query(`SELECT * FROM adjusment_transactions WHERE id = ${id};--`)
 }
 
 exports.create = async (payload) => {
@@ -15,3 +23,21 @@ exports.create = async (payload) => {
 exports.update = async (payload) => {
     return await client.query(`UPDATE adjusment_transactions SET sku='${payload.sku}', quantity=${payload.quantity},amount=${payload.amount}`)
 }
+
+exports.deleteFromEvent = async (sku) => {
+    return await client.query(
+        `DELETE
+        FROM adjusment_transactions
+        WHERE ID IN
+        (
+            SELECT ID
+            FROM adjusment_transactions
+            WHERE sku LIKE '${sku}'
+        )`
+    )
+}
+
+exports.delete = async (id) => {
+ 
+    return await client.query(`DELETE FROM products where id = ${id};--`)
+ }

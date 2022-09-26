@@ -3,8 +3,8 @@ const Hapi = require('@hapi/hapi');
 const {client} = require('./src/helpers/database')
 const product = require('./src/api/routes/product')
 const transaction = require('./src/api/routes/transaction')
-// require('./src/helpers/consumer')
-
+const {consumer} = require('./src/helpers/consumer')
+const {topics} = require('./src/events/topic')
 const people = { // our "users database"
   1: {
     id: 1,
@@ -43,6 +43,7 @@ const init = async () => {
     })
     server.route(product.product)
     await server.start();
+    await consumer(topics)
     console.log('Server running on %s', server.info.uri);
 };
 process.on('unhandledRejection', (err) => {

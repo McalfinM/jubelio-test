@@ -7,7 +7,7 @@ exports.create = data => {
         image: Joi.string().required().empty(),
         quantity: Joi.number().required().empty(),
         price: Joi.number().required().empty(),
-        description: Joi.string().required().empty(),
+        description: Joi.string().optional(null),
     });
 
     return schema.validate(data);
