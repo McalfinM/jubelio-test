@@ -28,6 +28,9 @@ const product = [
     {
         method: 'GET',
         path: '/product/{id}',
+        options:{
+            auth: 'jwt'
+        },
         handler:(request, h) => {
             return controller.getDetai(request,h)
         }
@@ -35,6 +38,9 @@ const product = [
     {
         method: 'PUT',
         path: '/product/{id}',
+        options:{
+            auth: 'jwt'
+        },
         handler: async (request, res) => {
             try{
                 const data = await controller.update(request,res)
@@ -49,6 +55,9 @@ const product = [
     {
         method: 'DELETE',
         path: '/product/{id}',
+        options:{
+            auth: 'jwt'
+        },
         handler: async (request, res) => {
             try{
                 const data = await controller.delete(request,res)
@@ -63,6 +72,9 @@ const product = [
     {
         method: 'DELETE',
         path: '/product/sku/{sku}',
+        options:{
+            auth: 'jwt'
+        },
         handler: async (request, res) => {
             try{
                 const data = await controller.deleteSku(request,res)
@@ -77,6 +89,9 @@ const product = [
     {
         method: 'GET',
         path: '/product/sku/{sku}',
+        options:{
+            auth: 'jwt'
+        },
         handler: async (request, res) => {
             try{
                 const data = await controller.getDetailSku(request,res)

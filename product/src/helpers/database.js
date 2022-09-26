@@ -3,20 +3,20 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 
-// const client = new Client({
-//   password: process.env.DBPASSWORD,
-//   user: process.env.DBUSER,
-//   host:  process.env.DBHOST,
-//   port: process.env.DBPORT
-// });
-
-
 const client = new Client({
-  password: '123456789',
-  user: 'postgres',
-  host:  'localhost',
-  database: 'jubelio'
+  password: process.env.DBPASSWORD,
+  user: process.env.DBUSER,
+  host:  process.env.DBHOST,
+  port: process.env.DBPORT
 });
+
+
+// const client = new Client({
+//   password: '123456789',
+//   user: 'postgres',
+//   host:  'localhost',
+//   database: 'jubelio'
+// });
 
 
 const pool = new Pool({

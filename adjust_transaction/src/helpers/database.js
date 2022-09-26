@@ -20,7 +20,8 @@ const client = new Client({
   password: '123456789',
   user: 'postgres',
   host:  'localhost',
-  database: 'testing'
+  database: 'adjusment_transactions'
+  // database: 'testing' << for testing
 });
 
 const pool = new Pool({

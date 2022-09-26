@@ -3,11 +3,11 @@ const expect = chai.expect;
 const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised);
 const sinonChai = require('sinon-chai');
-const {pool} = require('../src/helpers/database')
+const {client} = require('../src/helpers/database')
 chai.use(sinonChai);
 const {server} = require('../server')
 
-let app = "localhost:8080", uri = '/product'
+let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkFudGhvbnkgVmFsaWQgVXNlciIsImlhdCI6MTQyNTQ3MzUzNX0.KA68l60mjiC8EXaC2odnjFwdIDxE__iDu5RwLdN1F2A'
 const payload = {
   name: 'produk1',
   sku: '12345678',
@@ -19,8 +19,8 @@ const payload = {
 describe('Testing product API', () => {
     
   before('Create products tables', async function () {
-    await pool.query(`
-    CREATE TABLE products
+    await client.query(`
+    CREATE TABLE product_testing
 (
     id SERIAL,
     name text,
@@ -40,13 +40,14 @@ describe('Testing product API', () => {
   
         const options = {
           method: 'POST',
-          url: '/product',
+          url: '/testing-product',
           headers:{
-            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkFudGhvbnkgVmFsaWQgVXNlciIsImlhdCI6MTQyNTQ3MzUzNX0.KA68l60mjiC8EXaC2odnjFwdIDxE__iDu5RwLdN1F2A'
+            'Authorization': token
           },
           payload: JSON.stringify(payload)
       };
       const data = await server.inject(options);
+      console.log(data,' data')
       expect(data.statusCode).equal(201);
         
       })
@@ -55,10 +56,10 @@ describe('Testing product API', () => {
   
         const options = {
           method: 'POST',
-          url: '/product',
+          url: '/testing-product',
           payload: JSON.stringify(payload),
           headers:{
-            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkFudGhvbnkgVmFsaWQgVXNlciIsImlhdCI6MTQyNTQ3MzUzNX0.KA68l60mjiC8EXaC2odnjFwdIDxE__iDu5RwLdN1F2A'
+            'Authorization': token
           }
         };
         const data = await server.inject(options);
@@ -69,9 +70,9 @@ describe('Testing product API', () => {
   
         const options = {
           method: 'GET',
-          url: '/product',
+          url: '/testing-product',
           headers:{
-            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkFudGhvbnkgVmFsaWQgVXNlciIsImlhdCI6MTQyNTQ3MzUzNX0.KA68l60mjiC8EXaC2odnjFwdIDxE__iDu5RwLdN1F2A'
+            'Authorization': token
           }
         };
         const data = await server.inject(options);
@@ -84,9 +85,9 @@ describe('Testing product API', () => {
   
         const options = {
           method: 'GET',
-          url: '/product/sku/'+payload.sku,
+          url: '/testing-product/sku/'+payload.sku,
           headers:{
-            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkFudGhvbnkgVmFsaWQgVXNlciIsImlhdCI6MTQyNTQ3MzUzNX0.KA68l60mjiC8EXaC2odnjFwdIDxE__iDu5RwLdN1F2A'
+            'Authorization': token
           }
         };
         const data = await server.inject(options);
@@ -95,7 +96,7 @@ describe('Testing product API', () => {
 
 
       it('Should DELETE a product table', async function () {
-        await pool.query('DROP TABLE IF EXISTS products')
+        await client.query('DROP TABLE IF EXISTS product_testing')
 
       })
 

@@ -27,3 +27,15 @@ exports.getAll = async (request,h) => {
     const data = await service.get(limit,page)
     return data
 }
+
+exports.delete = async (request,h) => {
+    const id = request.params.id
+    const data = await service.delete(id)
+    return data
+}
+
+exports.getDetail = async (request,h) => {
+    const id = request.params.id
+    const data = await service.getDetail(id)
+    return data
+}

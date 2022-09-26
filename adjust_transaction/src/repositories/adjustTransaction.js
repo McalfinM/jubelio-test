@@ -39,5 +39,5 @@ exports.deleteFromEvent = async (sku) => {
 
 exports.delete = async (id) => {
  
-    return await client.query(`DELETE FROM products where id = ${id};--`)
+    return await client.query(`DELETE FROM adjusment_transactions where id = ${id};--`)
  }

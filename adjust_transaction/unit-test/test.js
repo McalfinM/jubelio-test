@@ -95,19 +95,19 @@ INSERT INTO products(name,sku, quantity, price, description, image) VALUES ('Bas
           expect(data.statusCode).eq(200);
         })
   
-        // it('Should get detail product', async function () {
+        it('Should get detail transaction', async function () {
         
     
-        //   const options = {
-        //     method: 'GET',
-        //     url: '/transaction/sku/'+payload.sku,
-        //     headers:{
-        //       'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkFudGhvbnkgVmFsaWQgVXNlciIsImlhdCI6MTQyNTQ3MzUzNX0.KA68l60mjiC8EXaC2odnjFwdIDxE__iDu5RwLdN1F2A'
-        //     }
-        //   };
-        //   const data = await server.inject(options);
-        //   expect(data.statusCode).eq(200);
-        // })
+          const options = {
+            method: 'GET',
+            url: '/transaction/sku/'+payload.sku,
+            headers:{
+              'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkFudGhvbnkgVmFsaWQgVXNlciIsImlhdCI6MTQyNTQ3MzUzNX0.KA68l60mjiC8EXaC2odnjFwdIDxE__iDu5RwLdN1F2A'
+            }
+          };
+          const data = await server.inject(options);
+          expect(data.statusCode).eq(200);
+        })
   
   
         it('Should DELETE a adjusment_transaction table', async function () {

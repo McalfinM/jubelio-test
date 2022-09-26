@@ -2,7 +2,7 @@
 const Hapi = require('@hapi/hapi');
 const {client} = require('./src/helpers/database')
 const product = require('./src/api/routes/product')
-const transaction = require('./src/api/routes/transaction')
+const testing = require('./src/api/routes/testing_api')
 const {consumer} = require('./src/helpers/consumer')
 const {topics} = require('./src/events/topic')
 const people = { // our "users database"
@@ -42,6 +42,9 @@ const init = async () => {
       }
     })
     server.route(product.product)
+
+    //testing api
+    server.route(testing.testing)
     await server.start();
     await consumer(topics)
     console.log('Server running on %s', server.info.uri);

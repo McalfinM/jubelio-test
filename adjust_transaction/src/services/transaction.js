@@ -28,7 +28,7 @@ exports.get = async (limit,page) => {
 exports.getDetail = async (id) => {
 
     const data = await repository.getDetail(id)
-    return data
+    return data.rows[0]
 }
 
 exports.create = async (request) => {
@@ -69,10 +69,12 @@ exports.update = async (sku, request) => {
           amount: total_price
   
       }
-     console.log(json,'json')
-    const adjust = await repository.update(json)
-    const productAdjust = await serivceProduct.adjustmentProduct(json)
-    return adjust
+    return new Promise( async (res,rej) => {
+        const adjust = await repository.update(json)
+        const productAdjust = await serivceProduct.adjustmentProduct(json)
+        await producer.produce('update_transaction', productAdjust)
+        res(adjust)
+    })
       //logic lempar kafka ke service product untuk mengurangi stok
 }
 
