@@ -1,8 +1,6 @@
 # Jubelio Test
 
-## _The Last Markdown Editor, Ever_
 
-## Features
 
 menjalankan via docker menggunakan `docker-compose up --build -d`
 
