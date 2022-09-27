@@ -2,6 +2,8 @@
 
 menjalankan via docker menggunakan `docker-compose up --build -d`
 
+Saat dijalankan lewat docker untuk service product akan running di localhost:8080 sendangkan adjusment transaction akan berjalan di localhost:8089
+
 menjalankan local dengan npm run start di setiap service
 
 untuk menjalankan local perlu download file pendukung seperti zookeper dll
