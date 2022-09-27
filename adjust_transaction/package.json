@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "mocha ./unit-test/test.js --timeout 10000 --exit"
+    "test": "mocha ./unit-test/test.js --timeout 20000 --exit"
   },
   "author": "",
   "license": "ISC",

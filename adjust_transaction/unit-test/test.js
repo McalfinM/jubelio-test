@@ -5,20 +5,24 @@ chai.use(chaiAsPromised);
 const sinonChai = require('sinon-chai');
 const {pool} = require('../src/helpers/database')
 chai.use(sinonChai);
-const {server} = require('../server')
+const {server} = require('../server');
+const { consumer } = require('../src/helpers/consumer');
 
 let payload = {
   sku: '26682889',
   quantity: 12
 }
 
+
+
 let payload_two = {
   sku: '26682888',
   quantity: 3
 }
-describe('Testing product API', () => {
+describe('Testing adjusment transaction API', () => {
     
     before('Create products tables', async function () {
+      // await consumer(consum)
       await pool.query(`
       CREATE TABLE products
   (
@@ -55,7 +59,7 @@ INSERT INTO products(name,sku, quantity, price, description, image) VALUES ('Bas
     
           const options = {
             method: 'POST',
-            url: '/transaction',
+            url: '/testing-transaction',
             headers:{
               'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkFudGhvbnkgVmFsaWQgVXNlciIsImlhdCI6MTQyNTQ3MzUzNX0.KA68l60mjiC8EXaC2odnjFwdIDxE__iDu5RwLdN1F2A'
             },
@@ -71,7 +75,7 @@ INSERT INTO products(name,sku, quantity, price, description, image) VALUES ('Bas
     
           const options = {
             method: 'POST',
-            url: '/transaction',
+            url: '/testing-transaction',
             payload: JSON.stringify(payload_two),
             headers:{
               'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkFudGhvbnkgVmFsaWQgVXNlciIsImlhdCI6MTQyNTQ3MzUzNX0.KA68l60mjiC8EXaC2odnjFwdIDxE__iDu5RwLdN1F2A'
@@ -85,7 +89,7 @@ INSERT INTO products(name,sku, quantity, price, description, image) VALUES ('Bas
     
           const options = {
             method: 'GET',
-            url: '/transaction',
+            url: '/testing-transaction',
             headers:{
               'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkFudGhvbnkgVmFsaWQgVXNlciIsImlhdCI6MTQyNTQ3MzUzNX0.KA68l60mjiC8EXaC2odnjFwdIDxE__iDu5RwLdN1F2A'
             }
@@ -100,7 +104,7 @@ INSERT INTO products(name,sku, quantity, price, description, image) VALUES ('Bas
     
           const options = {
             method: 'GET',
-            url: '/transaction/sku/'+payload.sku,
+            url: '/testing-transaction/sku/'+ payload.sku,
             headers:{
               'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkFudGhvbnkgVmFsaWQgVXNlciIsImlhdCI6MTQyNTQ3MzUzNX0.KA68l60mjiC8EXaC2odnjFwdIDxE__iDu5RwLdN1F2A'
             }

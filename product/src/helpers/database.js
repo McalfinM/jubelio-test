@@ -4,10 +4,10 @@ dotenv.config()
 
 
 const client = new Client({
-  password: process.env.DBPASSWORD,
-  user: process.env.DBUSER,
-  host:  process.env.DBHOST,
-  port: process.env.DBPORT
+  password: process.env.DBPASSWORD || '123456789',
+  user: process.env.DBUSER || 'postgres',
+  host:  process.env.DBHOST || 'localhost',
+  port: process.env.DBPORT || 5432
 });
 
 
@@ -15,7 +15,8 @@ const client = new Client({
 //   password: '123456789',
 //   user: 'postgres',
 //   host:  'localhost',
-//   database: 'jubelio'
+//   database: 'jubelio',
+//   database: 'testing' << untuk testing
 // });
 
 

@@ -50,7 +50,7 @@ exports.create = async (payload) => {
       description: payload.description,
    }
   const create = await repository.create(data)
-  await producer.produce('create_product', data)
+  await producer.produce('testing_create_product', data)
 
   return create
 }
@@ -73,7 +73,7 @@ exports.update = async (id,payload) => {
       description: payload.description,
    }
   const create = await repository.update(data)
-  await producer.produce('update_product', data)
+  await producer.produce('testing_update_product', data)
   return create
 }
 
@@ -82,7 +82,7 @@ exports.delete = async (id) => {
    if(product.rowCount < 1) throw new Error('product not found')
 
    const dataProdut = await repository.delete(id)
-   await producer.produce('delete_product', product.rows[0])
+   await producer.produce('testing_delete_product', product.rows[0])
    return dataProdut
 }
 

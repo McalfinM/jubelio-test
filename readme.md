@@ -1,7 +1,5 @@
 # Jubelio Test
 
-
-
 menjalankan via docker menggunakan `docker-compose up --build -d`
 
 menjalankan local dengan npm run start di setiap service
@@ -16,6 +14,8 @@ extract lalu di root folder jalankan
 `docker-compose up -d`
 
 `cd product` atau `cd adjust_transaction` lalu `npm run start`
+
+untuk menjalankan testing,
 
 ### API DOCUMENTATION
 

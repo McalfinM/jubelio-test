@@ -3,7 +3,7 @@ const expect = chai.expect;
 const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised);
 const sinonChai = require('sinon-chai');
-const {client} = require('../src/helpers/database')
+const {pool} = require('../src/helpers/database')
 chai.use(sinonChai);
 const {server} = require('../server')
 
@@ -19,7 +19,7 @@ const payload = {
 describe('Testing product API', () => {
     
   before('Create products tables', async function () {
-    await client.query(`
+    await pool.query(`
     CREATE TABLE product_testing
 (
     id SERIAL,
@@ -47,7 +47,7 @@ describe('Testing product API', () => {
           payload: JSON.stringify(payload)
       };
       const data = await server.inject(options);
-      console.log(data,' data')
+
       expect(data.statusCode).equal(201);
         
       })
@@ -96,7 +96,7 @@ describe('Testing product API', () => {
 
 
       it('Should DELETE a product table', async function () {
-        await client.query('DROP TABLE IF EXISTS product_testing')
+        await pool.query('DROP TABLE IF EXISTS product_testing')
 
       })
 
