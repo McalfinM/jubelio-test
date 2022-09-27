@@ -15,7 +15,9 @@ extract lalu di root folder jalankan
 
 `cd product` atau `cd adjust_transaction` lalu `npm run start`
 
-untuk menjalankan testing,
+untuk menjalankan testing, buat database local dengan nama testing
+
+lalu jalankan `npm run test`
 
 ### API DOCUMENTATION
 
