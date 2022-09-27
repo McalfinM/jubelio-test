@@ -1,5 +1,5 @@
 # Jubelio Test
-
+lakukan ```npm install``` didalam folder adjust transaction dan product terlebih dahulu
 menjalankan via docker menggunakan `docker-compose up --build -d`
 
 Saat dijalankan lewat docker untuk service product akan running di localhost:8080 sendangkan adjusment transaction akan berjalan di localhost:8089
