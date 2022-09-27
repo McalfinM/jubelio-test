@@ -41,7 +41,7 @@ exports.create = async (request) => {
     //search product by sku
     const product = await serivceProduct.getDetail(request.sku)
     if(product.length < 1) throw new Error('product not found')
-    if(product.length > 0 && Number(product[0].quantity) ===0) throw new Error('product is out of amount')
+    if(product.length > 0 && Number(product[0].quantity) < 1) throw new Error('product is out of amount')
     //logic create adjusment + logic harga * quantity yang dibuat
     let total_price = request.quantity * product[0].price
     let json = {
