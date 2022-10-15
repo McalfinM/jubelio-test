@@ -41,7 +41,7 @@ exports.create = async (request) => {
     //search product by sku
     const product = await serivceProduct.getDetail(request.sku)
     if(product.length < 1) throw new Error('product not found')
-    if(product.length > 0 && Number(product[0].quantity) < 1) throw new Error('product is out of amount')
+    if(product.length > 0 && Number(product[0].quantity) < 1) throw new Error('product is out of stock')
     //logic create adjusment + logic harga * quantity yang dibuat
     let total_price = request.quantity * product[0].price
     let json = {
@@ -53,7 +53,9 @@ exports.create = async (request) => {
    
     const adjust = await repository.create(json)
     const productAdjust = await serivceProduct.adjustmentProduct(json)
-    await producer.produce('create_transaction', productAdjust)
+    .then(async (data)=> {
+        await producer.produce('create_transaction', data)
+    })
     return adjust
     //logic lempar kafka ke service product untuk mengurangi stok
 
@@ -77,7 +79,9 @@ exports.update = async (sku, request) => {
     return new Promise( async (res,rej) => {
         const adjust = await repository.update(json)
         const productAdjust = await serivceProduct.adjustmentProduct(json)
-        await producer.produce('update_transaction', productAdjust)
+        .then(async (data) => {
+            await producer.produce('update_transaction', data)
+        })
         res(adjust)
     })
       //logic lempar kafka ke service product untuk mengurangi stok
