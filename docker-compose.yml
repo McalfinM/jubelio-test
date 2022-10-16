@@ -3,6 +3,10 @@ services:
   # These are the configurations for our Node app
   # When Docker Compose starts this container it will automatically
   # use the Dockerfile in the directory to configure it
+  krakend:
+    build: ./krakend
+    ports:
+      - 9000:9000
   adjust_transaction:
     build: ./adjust_transaction
     depends_on:
@@ -44,6 +48,8 @@ services:
       - DBPASSWORD=product
       - DBUSER=product
       - DBPORT=5432
+      - JWT_SECRETE=jwt_secrete
+      - JWT_REFRESH_TOKEN_SECRETE=jwt_secrete
     # network_mode: "host"
     ports:
       - 8080:8080

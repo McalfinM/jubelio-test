@@ -4,9 +4,9 @@ const product = [
     {
         method: 'GET',
         path: '/product',
-        options:{
-            auth: 'jwt'
-        },
+        // options:{
+        //     auth: 'jwt'
+        // },
         handler: (request,h) => {
             return controller.getAll(request,h)
         }
@@ -103,6 +103,14 @@ const product = [
             }
         }
     },
+    {
+        method: 'GET',
+        path: '/jwt',
+        handler: function (request, h) {
+
+            return h.file('jwt.json');
+        }
+    }
 ]
 
 module.exports = {product}
