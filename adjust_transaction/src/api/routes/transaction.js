@@ -1,5 +1,12 @@
 const controller = require('../contorller/adjustTransaction')
 
+const plugin = {
+  'hapi-rate-limitor': {
+    max: 100,              // a maximum of 5 requests
+    duration: 60 * 1000, // per minute
+    enabled: true       // but it’s actually not enabled ;-)
+  }
+}
 const transaction = [
   {
     method: 'Get',
@@ -7,16 +14,20 @@ const transaction = [
   //   options:{
   //     auth: 'jwt'
   // },
-    handler: async (request,h) => {
-      try{
-        const data = await controller.getAll(request,h)
-        return h.response(data).code(200)
-      }catch(err){
-        console.log(err)
-        // return err.message
-        return err.message
-      }
-    }
+  
+    options: {
+      handler: async (request,h) => {
+        try{
+          const data = await controller.getAll(request,h)
+          return h.response(data).code(200)
+        }catch(err){
+          console.log(err)
+          // return err.message
+          return err.message
+        }
+      },
+      plugins: plugin
+    },
   },
   {
     method: 'POST',
@@ -24,6 +35,7 @@ const transaction = [
   //   options:{
   //     auth: 'jwt'
   // },
+  options: {
     handler: async (request,h) => {
       try{
         const data = await controller.create(request,h)
@@ -33,7 +45,10 @@ const transaction = [
         // return err.message
         return err.message
       }
-    }
+    },
+    plugins: plugin
+}
+   
   },
   {
     method: 'PUT',
@@ -41,6 +56,7 @@ const transaction = [
   //   options:{
   //     auth: 'jwt'
   // },
+  options: {
     handler: async (request,h) => {
       try{
         const data = await controller.update(request,h)
@@ -49,7 +65,10 @@ const transaction = [
         console.log(err)
         return err.message
       }
-    }
+    },
+    plugins: plugin
+}
+   
   },
   {
     method: 'GET',
@@ -57,6 +76,7 @@ const transaction = [
   //   options:{
   //     auth: 'jwt'
   // },
+  options: {
     handler: async (request,h) => {
       try{
         const data = await controller.getDetail(request,h)
@@ -65,7 +85,10 @@ const transaction = [
         console.log(err)
         return err.message
       }
-    }
+    },
+    plugins: plugin
+}
+   
   },
   {
     method: 'DELETE',
@@ -73,6 +96,7 @@ const transaction = [
   //   options:{
   //     auth: 'jwt'
   // },
+  options: {
     handler: async (request,h) => {
       try{
 
@@ -82,7 +106,10 @@ const transaction = [
         console.log(err)
         return err.message
       }
-    }
+    },
+    plugins: plugin
+}
+   
   },
 
 ]

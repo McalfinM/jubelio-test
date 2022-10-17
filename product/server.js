@@ -7,6 +7,9 @@ const auth = require('./src/api/routes/auth')
 const {consumer} = require('./src/helpers/consumer')
 const {topics} = require('./src/events/topic')
 const Path = require('path')
+const controller = require("./src/api/controllers/product")
+const dotenv = require('dotenv')
+dotenv.config()
 const people = { // our "users database"
   1: {
     id: 1,
@@ -35,12 +38,12 @@ const server = Hapi.server({
 
 });
 const init = async () => {
-    await server.register(require('hapi-auth-jwt2'));
+    // await server.register(require('hapi-auth-jwt2'));
     await client.connect()
-    server.auth.strategy('jwt', 'jwt',
-    { key: 'NeverShareYourSecret', // Never Share your secret key
-      validate  // validate function defined above
-    });
+    // server.auth.strategy('jwt', 'jwt',
+    // { key: 'NeverShareYourSecret', // Never Share your secret key
+    //   validate  // validate function defined above
+    // });
     server.route({
       method: 'GET',
       path: '/',
@@ -49,10 +52,20 @@ const init = async () => {
       }
     })
     await server.register(require('@hapi/inert'));
+    await server.register({
+      plugin: require('hapi-rate-limitor'),
+      options: {
+        redis: {
+          port: process.env.REDIS || 6379,
+          host: 'redis'
+        },
+        namespace: 'hapi-rate-limitor',
+      }
+    })
     server.route(product.product)
 
     //testing api
-    server.route(testing.testing)
+    // server.route(testing.testing)
     server.route(auth.auth)
     await server.start();
     await consumer(topics)
