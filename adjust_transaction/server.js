@@ -27,8 +27,17 @@ const server = Hapi.server({
   host: '0.0.0.0'
 });
 const init = async () => {
-
-  await server.register(require('hapi-auth-jwt2'));
+  await server.register({
+    plugin: require('hapi-rate-limitor'),
+    options: {
+      redis: {
+        port: process.env.REDIS || 6379,
+        host: 'redis'
+      },
+      namespace: 'hapi-rate-limitor',
+    }
+  })
+  // await server.register(require('hapi-auth-jwt2'));
     await client.connect()
     server.route({
       method: 'GET',
@@ -37,10 +46,10 @@ const init = async () => {
         return 'congrats !!'
       }
     })
-    server.auth.strategy('jwt', 'jwt',
-    { key: 'NeverShareYourSecret', // Never Share your secret key
-      validate  // validate function defined above
-    });
+    // server.auth.strategy('jwt', 'jwt',
+    // { key: 'NeverShareYourSecret', // Never Share your secret key
+    //   validate  // validate function defined above
+    // });
     server.route(transaction.transaction)
     server.route(testing)
     await server.start();

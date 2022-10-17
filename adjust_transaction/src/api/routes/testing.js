@@ -4,9 +4,9 @@ const testing = [
   {
     method: 'Get',
     path: '/testing-transaction',
-    options:{
-      auth: 'jwt'
-  },
+  //   options:{
+  //     auth: 'jwt'
+  // },
     handler: async (request,h) => {
       try{
         const data = await controller.getAll(request,h)
@@ -21,9 +21,9 @@ const testing = [
   {
     method: 'POST',
     path: '/testing-transaction',
-    options:{
-      auth: 'jwt'
-  },
+  //   options:{
+  //     auth: 'jwt'
+  // },
     handler: async (request,h) => {
       try{
         const data = await controller.create(request,h)
@@ -38,9 +38,9 @@ const testing = [
   {
     method: 'PUT',
     path: '/testing-transaction/{sku}',
-    options:{
-      auth: 'jwt'
-  },
+  //   options:{
+  //     auth: 'jwt'
+  // },
     handler: async (request,h) => {
       try{
         const data = await controller.update(request,h)
@@ -54,9 +54,9 @@ const testing = [
   {
     method: 'GET',
     path: '/testing-transaction/{id}',
-    options:{
-      auth: 'jwt'
-  },
+  //   options:{
+  //     auth: 'jwt'
+  // },
     handler: async (request,h) => {
       try{
         const data = await controller.getDetail(request,h)
@@ -70,9 +70,9 @@ const testing = [
   {
     method: 'DELETE',
     path: '/testing-transaction/{id}',
-    options:{
-      auth: 'jwt'
-  },
+  //   options:{
+  //     auth: 'jwt'
+  // },
     handler: async (request,h) => {
       try{
 
@@ -87,9 +87,9 @@ const testing = [
   {
     method: 'GET',
     path: '/testing-transaction/sku/{sku}',
-    options:{
-      auth: 'jwt'
-  },
+  //   options:{
+  //     auth: 'jwt'
+  // },
     handler: async (request,h) => {
       try{
         const data = await controller.getDetailSku(request,h)

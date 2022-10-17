@@ -3,6 +3,13 @@ services:
   # These are the configurations for our Node app
   # When Docker Compose starts this container it will automatically
   # use the Dockerfile in the directory to configure it
+  redis:
+    image: redis:6.2-alpine
+    hostname: redis
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
   krakend:
     build: ./krakend
     ports:
@@ -20,6 +27,7 @@ services:
       - DBPASSWORD=adjust_transaction
       - DBUSER=adjust_transaction
       - DBPORT=5432
+      - REDIS=6379
     # network_mode: "host"
     ports:
       - 8089:8081
@@ -50,6 +58,7 @@ services:
       - DBPORT=5432
       - JWT_SECRETE=jwt_secrete
       - JWT_REFRESH_TOKEN_SECRETE=jwt_secrete
+      - REDIS=6379
     # network_mode: "host"
     ports:
       - 8080:8080

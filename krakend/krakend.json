@@ -62,11 +62,6 @@
           "cache": false,
           "disable_jwk_security": true,
           "operation_debug": true
-        },
-        "qos/ratelimit/router":{
-          "max_rate":50,
-          "client_max_rate":5,
-          "strategy":"ip"
         }
       },
       "output_encoding": "json",
@@ -79,6 +74,15 @@
           "host": [
             "http://192.168.1.6:8080"
           ],
+          "extra_config": {
+            "qos/circuit-breaker": {
+              "interval": 60,
+              "timeout": 10,
+              "max_errors": 1,
+              "name": "cb-myendpoint-1",
+              "log_status_change": true
+            }
+          },
           "disable_host_sanitize": false
         }
       ],
@@ -100,11 +104,6 @@
           "cache": false,
           "disable_jwk_security": true,
           "operation_debug": true
-        },
-        "qos/ratelimit/router":{
-          "max_rate":50,
-          "client_max_rate":5,
-          "strategy":"ip"
         }
       },
       "output_encoding": "no-op",
@@ -137,11 +136,6 @@
           "cache": false,
           "disable_jwk_security": true,
           "operation_debug": true
-        },
-        "qos/ratelimit/router":{
-          "max_rate":50,
-          "client_max_rate":5,
-          "strategy":"ip"
         }
       },
       "output_encoding": "no-op",
@@ -171,11 +165,6 @@
           "cache": false,
           "disable_jwk_security": true,
           "operation_debug": true
-        },
-        "qos/ratelimit/router":{
-          "max_rate":50,
-          "client_max_rate":5,
-          "strategy":"ip"
         }
       },
       "output_encoding": "no-op",
@@ -205,11 +194,6 @@
           "cache": false,
           "disable_jwk_security": true,
           "operation_debug": true
-        },
-        "qos/ratelimit/router":{
-          "max_rate":50,
-          "client_max_rate":5,
-          "strategy":"ip"
         }
       },
       "output_encoding": "no-op",
