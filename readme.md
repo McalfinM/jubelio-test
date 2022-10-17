@@ -1,4 +1,18 @@
 # Jubelio Test
+
+
+
+#Krakend
+
+### penambahan fitur yaitu krakend sebagai api gateway
+mungkin perlu penyesuaian untuk dapat dijalankan local, didalam folder krakend -> krakend.json ip local dirubah menjadi iplocal masing masing
+
+cara mengecek iplocal and untuk windows buka cmd ketikan ```ipconfig``` lalu cari dibagian ipv4 dan pastekan kedalam ```hosts``` yang ada di dalam configure krakend.json
+
+untuk macos atau linux mengecek ip gunakan ```ifconfig``` cari ipv4 kalian lalu lakukan hal yang sama seperti di windows
+
+
+---
 lakukan ```npm install``` didalam folder adjust transaction dan product terlebih dahulu
 menjalankan via docker menggunakan `docker-compose up --build -d`
 
