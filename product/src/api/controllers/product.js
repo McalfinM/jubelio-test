@@ -10,7 +10,8 @@ exports.getAll = async (request, h) => {
 exports.getDetai = async(request, h) => {
 
     try{
-        return await service.getDetail(request.params.id)
+        const detail = await service.getDetail(request.params.id)
+        return await detail[0]
     }catch(err){
         console.log(err)
     }

@@ -50,7 +50,9 @@ exports.create = async (payload) => {
       description: payload.description,
    }
   const create = await repository.create(data)
-  await producer.produce('create_product', data)
+  .then(async (payload) => {
+     await producer.produce('create_product', data)
+  })
 
   return create
 }

@@ -11,7 +11,7 @@ exports.get = async (limit,page) => {
        arr.push({
           id:transaction[i].id,
           sku: transaction[i].sku,
-          name: transaction[i].name,
+          quantity: transaction[i].quantity,
           amount: transaction[i].amount,
        })
     }
@@ -39,6 +39,9 @@ exports.create = async (request) => {
     if(product.length > 0 && Number(product[0].quantity) < 1) throw new Error('product is out of amount')
     //logic create adjusment + logic harga * quantity yang dibuat
     let total_price = request.quantity * product[0].price
+    if(total_price < 0){
+        total_price = total_price * -1
+    }
     let json = {
         sku: product[0].sku,
         quantity: request.quantity,

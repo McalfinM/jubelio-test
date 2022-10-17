@@ -1,0 +1,381 @@
+{
+  "$schema": "https://www.krakend.io/schema/v3.json",
+  "version": 3,
+  "name": "api-gateway",
+  "timeout": "30000ms",
+  "cache_ttl": "300s",
+  "output_encoding": "no-op",
+  "port": 9000,
+  "extra_config":{
+    "router":{
+      "return_error_msg": true
+    },
+    "security/cors": {
+      "allow_origins": [
+        "*"
+      ],
+      "allow_methods": [
+        "GET",
+        "HEAD",
+        "POST"
+      ],
+      "expose_headers": [
+        "Content-Length",
+        "Content-Type"
+      ],
+      "allow_headers": [
+        "Accept-Language"
+      ],
+      "max_age": "12h",
+      "allow_credentials": false,
+      "debug": false
+    }
+  },
+  "endpoints": [
+    {
+      "endpoint": "/v1/token",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/login",
+          "encoding": "json",
+          "method": "POST",
+          "sd": "static",
+          "host": [
+            "http://192.168.1.6:8080"
+          ],
+          "disable_host_sanitize": false
+        }
+      ],
+      "input_headers": [
+        "*"
+      ]
+    },
+    {
+      "endpoint": "/v1/product",
+      "method": "GET",
+      "extra_config":{
+        "auth/validator": {
+          "alg": "HS256",
+          "jwk_url": "http://192.168.1.6:8080/jwt",
+          "cache": false,
+          "disable_jwk_security": true,
+          "operation_debug": true
+        },
+        "qos/ratelimit/router":{
+          "max_rate":50,
+          "client_max_rate":5,
+          "strategy":"ip"
+        }
+      },
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/product",
+          "encoding": "json",
+          "sd": "static",
+          "method": "GET",
+          "host": [
+            "http://192.168.1.6:8080"
+          ],
+          "disable_host_sanitize": false
+        }
+      ],
+      "input_query_strings": [
+        "npp",
+        "page"
+      ],
+      "input_headers": [
+        "*"
+      ]
+    },
+    {
+      "endpoint": "/v1/product/{id}",
+      "method": "GET",
+      "extra_config":{
+        "auth/validator": {
+          "alg": "HS256",
+          "jwk_url": "http://192.168.1.6:8080/jwt",
+          "cache": false,
+          "disable_jwk_security": true,
+          "operation_debug": true
+        },
+        "qos/ratelimit/router":{
+          "max_rate":50,
+          "client_max_rate":5,
+          "strategy":"ip"
+        }
+      },
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/product/{id}",
+          "encoding": "json",
+          "sd": "static",
+          "method": "GET",
+          "host": [
+            "http://192.168.1.6:8080"
+          ],
+          "disable_host_sanitize": false
+        }
+      ],
+      "input_query_strings": [
+        "id"
+      ],
+      "input_headers": [
+        "*"
+      ]
+    },
+    {
+      "endpoint": "/v1/product",
+      "method": "POST",
+      "extra_config":{
+        "auth/validator": {
+          "alg": "HS256",
+          "jwk_url": "http://192.168.1.6:8080/jwt",
+          "cache": false,
+          "disable_jwk_security": true,
+          "operation_debug": true
+        },
+        "qos/ratelimit/router":{
+          "max_rate":50,
+          "client_max_rate":5,
+          "strategy":"ip"
+        }
+      },
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/product",
+          "encoding": "json",
+          "sd": "static",
+          "method": "POST",
+          "host": [
+            "http://192.168.1.6:8080"
+          ],
+          "disable_host_sanitize": false
+        }
+      ],
+      "input_headers": [
+        "*"
+      ]
+    },
+    {
+      "endpoint": "/v1/product/{id}",
+      "method": "PUT",
+      "extra_config":{
+        "auth/validator": {
+          "alg": "HS256",
+          "jwk_url": "http://192.168.1.6:8080/jwt",
+          "cache": false,
+          "disable_jwk_security": true,
+          "operation_debug": true
+        },
+        "qos/ratelimit/router":{
+          "max_rate":50,
+          "client_max_rate":5,
+          "strategy":"ip"
+        }
+      },
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/product/{id}",
+          "encoding": "json",
+          "sd": "static",
+          "method": "PUT",
+          "host": [
+            "http://192.168.1.6:8080"
+          ],
+          "disable_host_sanitize": false
+        }
+      ],
+      "input_headers": [
+        "*"
+      ]
+    },
+    {
+      "endpoint": "/v1/product/{id}",
+      "method": "DELETE",
+      "extra_config":{
+        "auth/validator": {
+          "alg": "HS256",
+          "jwk_url": "http://192.168.1.6:8080/jwt",
+          "cache": false,
+          "disable_jwk_security": true,
+          "operation_debug": true
+        },
+        "qos/ratelimit/router":{
+          "max_rate":50,
+          "client_max_rate":5,
+          "strategy":"ip"
+        }
+      },
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/product/{id}",
+          "encoding": "json",
+          "sd": "static",
+          "method": "DELETE",
+          "host": [
+            "http://192.168.1.6:8080"
+          ],
+          "disable_host_sanitize": false
+        }
+      ],
+      "input_headers": [
+        "*"
+      ]
+    },
+    {
+      "endpoint": "/v1/transaction",
+      "method": "GET",
+      "extra_config":{
+        "auth/validator": {
+          "alg": "HS256",
+          "jwk_url": "http://192.168.1.6:8080/jwt",
+          "cache": false,
+          "disable_jwk_security": true,
+          "operation_debug": true
+        },
+        "qos/ratelimit/router":{
+          "max_rate":100,
+          "client_max_rate":5,
+          "strategy":"ip"
+        }
+      },
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/transaction",
+          "encoding": "json",
+          "sd": "static",
+          "method": "GET",
+          "host": [
+            "http://192.168.1.6:8089"
+          ],
+          "disable_host_sanitize": false
+        }
+      ],
+      "input_query_strings": [
+        "page",
+        "limit"
+      ],
+      "input_headers": [
+        "*"
+      ]
+    },
+    {
+      "endpoint": "/v1/transaction",
+      "method": "POST",
+      "extra_config":{
+        "auth/validator": {
+          "alg": "HS256",
+          "jwk_url": "http://192.168.1.6:8080/jwt",
+          "cache": false,
+          "disable_jwk_security": true,
+          "operation_debug": true
+        },
+        "qos/ratelimit/router":{
+          "max_rate":100,
+          "client_max_rate":5,
+          "strategy":"ip"
+        }
+      },
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/transaction",
+          "encoding": "json",
+          "sd": "static",
+          "method": "POST",
+          "host": [
+            "http://192.168.1.6:8089"
+          ],
+          "disable_host_sanitize": false
+        }
+      ],
+      "input_headers": [
+        "*"
+      ]
+    }, 
+    {
+      "endpoint": "/v1/transaction/{id}",
+      "method": "GET",
+      "extra_config":{
+        "auth/validator": {
+          "alg": "HS256",
+          "jwk_url": "http://192.168.1.6:8080/jwt",
+          "cache": false,
+          "disable_jwk_security": true,
+          "operation_debug": true
+        },
+        "qos/ratelimit/router":{
+          "max_rate":100,
+          "client_max_rate":5,
+          "strategy":"ip"
+        }
+      },
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/transaction/{id}",
+          "encoding": "no-op",
+          "sd": "static",
+          "method": "GET",
+          "host": [
+            "http://192.168.1.6:8089"
+          ],
+          "disable_host_sanitize": false
+        }
+      ],
+      "input_query_strings": [
+        "page",
+        "limit"
+      ],
+      "input_headers": [
+        "*"
+      ]
+    },
+    {
+      "endpoint": "/v1/transaction/{id}",
+      "method": "DELETE",
+      "extra_config":{
+        "auth/validator": {
+          "alg": "HS256",
+          "jwk_url": "http://192.168.1.6:8080/jwt",
+          "cache": false,
+          "disable_jwk_security": true,
+          "operation_debug": true
+        },
+        "qos/ratelimit/router":{
+          "max_rate":100,
+          "client_max_rate":5,
+          "strategy":"ip"
+        }
+      },
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/transaction/{id}",
+          "encoding": "no-op",
+          "sd": "static",
+          "method": "DELETE",
+          "host": [
+            "http://192.168.1.6:8089"
+          ],
+          "disable_host_sanitize": false
+        }
+      ],
+      "input_query_strings": [
+        "page",
+        "limit"
+      ],
+      "input_headers": [
+        "*"
+      ]
+    }
+  ]
+}
