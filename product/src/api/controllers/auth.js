@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
-
+const dotenv = require('dotenv')
+dotenv.config()
 exports.login = (request,h) => {
     const username = "testing"
     const password = "password"
@@ -7,7 +8,7 @@ exports.login = (request,h) => {
         access_token:""
     }
    
-    return jwt.sign({ username: username }, "jwt_secrete", { algorithm: "HS256",keyid: "sim2" })
+    return jwt.sign({ username: username }, process.env.JWT_SECRETE || "jwt_secrete", { algorithm: "HS256",keyid: "sim2" })
 
     
 }
